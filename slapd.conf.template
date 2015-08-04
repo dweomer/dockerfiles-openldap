@@ -1,0 +1,166 @@
+# This is the main slapd configuration file. See slapd.conf(5) for more
+# info on the configuration options.
+#######################################################################
+# Global Directives:
+
+# Features to permit
+#allow bind_v2
+
+# Schema and objectClass definitions
+include     /etc/openldap/schema/core.schema
+include     /etc/openldap/schema/cosine.schema
+include     /etc/openldap/schema/nis.schema
+include     /etc/openldap/schema/inetorgperson.schema
+
+# Where the pid file is put. The init.d script
+# will not stop the server if you change this.
+pidfile     /var/run/openldap/slapd.pid
+
+# List of arguments that were passed to the server
+argsfile    /var/run/openldap/slapd.args
+
+# Read slapd.conf(5) for possible values
+loglevel    none
+
+# Where the dynamically loaded modules are stored
+modulepath  /usr/lib/openldap
+moduleload  back_hdb
+moduleload  memberof
+moduleload  refint
+
+# The maximum number of entries that is returned for a search operation
+sizelimit   1000
+
+# The tool-threads parameter sets the actual amount of cpu's that is used
+# for indexing.
+tool-threads 1
+
+#######################################################################
+# Specific Backend Directives for hdb:
+# Backend specific directives apply to this backend until another
+# 'backend' directive occurs
+backend     hdb
+
+# before the first database definition
+database    config
+# NOTE: the suffix is hardcoded as cn=config and 
+# MUST not have a suffix directive
+# normal rules apply - rootdn can be anything you want
+# but MUST be under cn=config
+rootdn      "cn=admin,cn=config"
+# use any of the supported password formats e.g. {SSHA} etc
+# or plaintext as shown
+rootpw      "${LDAP_PASSWORD}"
+
+# The userPassword by default can be changed
+# by the entry owning it if they are authenticated.
+# Others should not be able to see it, except the
+# admin entry below
+# These access lines apply to database #1 only
+access to attrs=userPassword,shadowLastChange
+        by dn="cn=admin" write
+        by anonymous auth
+        by self write
+        by * none
+
+# Ensure read access to the base for things like
+# supportedSASLMechanisms.  Without this you may
+# have problems with SASL not knowing what
+# mechanisms are available and the like.
+# Note that this is covered by the 'access to *'
+# ACL below too but if you change that as people
+# are wont to do you'll still need this if you
+# want SASL (and possible other things) to work 
+# happily.
+access to dn.base="" by * read
+
+# The admin dn has full write access, everyone else
+# can read everything.
+access to *
+        by dn="cn=admin" write
+        by * read
+
+#######################################################################
+# Specific Directives for database #1, of type hdb:
+# Database specific directives apply to this databasse until another
+# 'database' directive occurs
+database    hdb
+
+# The base of your directory in database #1
+suffix      "${LDAP_SUFFIX}"
+
+# rootdn directive for specifying a superuser on the database. This is needed
+# for syncrepl.
+rootdn      "cn=admin,${LDAP_SUFFIX}"
+# use any of the supported password formats e.g. {SSHA} etc
+# or plaintext as shown
+rootpw      "${LDAP_PASSWORD}"
+
+# Where the database file are physically stored for database #1
+directory   "/var/lib/openldap"
+
+# The dbconfig settings are used to generate a DB_CONFIG file the first
+# time slapd starts.  They do NOT override existing an existing DB_CONFIG
+# file.  You should therefore change these settings in DB_CONFIG directly
+# or remove DB_CONFIG and restart slapd for changes to take effect.
+
+# For the Debian package we use 2MB as default but be sure to update this
+# value if you have plenty of RAM
+dbconfig set_cachesize 0 2097152 0
+# Number of objects that can be locked at the same time.
+dbconfig set_lk_max_objects 1500
+# Number of locks (both requested and granted)
+dbconfig set_lk_max_locks 1500
+# Number of lockers
+dbconfig set_lk_max_lockers 1500
+
+# Indexing options for database #1
+index       objectClass eq
+
+# Save the time that the entry gets modified, for database #1
+lastmod     on
+
+# Checkpoint the BerkeleyDB database periodically in case of system
+# failure and to speed slapd shutdown.
+checkpoint  512 30
+
+# The userPassword by default can be changed
+# by the entry owning it if they are authenticated.
+# Others should not be able to see it, except the
+# admin entry below
+# These access lines apply to database #1 only
+access to attrs=userPassword,shadowLastChange
+        by dn="cn=admin" write
+        by anonymous auth
+        by self write
+        by * none
+
+# Ensure read access to the base for things like
+# supportedSASLMechanisms.  Without this you may
+# have problems with SASL not knowing what
+# mechanisms are available and the like.
+# Note that this is covered by the 'access to *'
+# ACL below too but if you change that as people
+# are wont to do you'll still need this if you
+# want SASL (and possible other things) to work 
+# happily.
+access to dn.base="" by * read
+
+# The admin dn has full write access, everyone else
+# can read everything.
+access to *
+        by dn="cn=admin" write
+        by * read
+
+# see slapo-memberof(5)
+overlay                 memberof
+memberof-group-oc       groupOfUniqueNames
+memberof-member-ad      uniqueMember
+memberof-memberof-ad    memberOf
+memberof-dangling       ignore
+memberof-refint         TRUE
+
+# see slapo-refint(5)
+overlay                 refint
+refint_attributes       memberof member uniquemember manager owner
+
