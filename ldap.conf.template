@@ -6,7 +6,7 @@
 # This file should be world readable but not world writable.
 
 #BASE   ${LDAP_SUFFIX}
-#URI    ldap://ldap.example.com ldap://ldap-master.example.com:666
+URI    ldapi://
 
 #SIZELIMIT  12
 #TIMELIMIT  15
