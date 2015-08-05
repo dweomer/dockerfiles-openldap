@@ -1,4 +1,4 @@
-# OpenLDAP's SLAPD running on a slimmer-than-Debian Alpine Linux 3.2.
+# OpenLDAP's SLAPD running on a slimmer-than-debian Alpine Linux 3.2 base.
 The [_`memberOf`_](http://www.openldap.org/software/man.cgi?query=slapo-memberof&sektion=5) (with [_refint_](http://www.openldap.org/software/man.cgi?query=slapo-refint&sektion=5)) overlay is installed and configured for [`groupOfUniqueNames`](https://tools.ietf.org/html/rfc4519#section-3.6).
 
 ## Usage
@@ -13,6 +13,7 @@ Defaults to `example.com` if not overridden.
 
 #### `declare -x LDAP_DOMAIN_OBJECTCLASS`
 Default value is [`domain`](https://tools.ietf.org/html/rfc4524#section-3.4). Supports any [`objectClass`](https://tools.ietf.org/html/rfc4512#section-3.3) or combination thereof that allows for the [`dc` aka `domainComponent`](https://tools.ietf.org/html/rfc4519#section-2.4) and [`o` aka `organizationName`](https://tools.ietf.org/html/rfc4519#section-2.19) attributes, e.g.
+
 ```
 export LDAP_DOMAIN_OBJECTCLASS="organization
 objectClass: dcObject"
