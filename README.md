@@ -1,4 +1,5 @@
-# OpenLDAP's SLAPD running on a slim Alpine Linux 3.2. The _memberof_ and _refint_ overlays are also installed.
+# OpenLDAP's SLAPD running on a slimmer-than-Debian Alpine Linux 3.2.
+The _memberof_ and _refint_ overlays are also installed.
 
 ## Usage
 ```
