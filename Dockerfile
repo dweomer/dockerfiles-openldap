@@ -1,5 +1,7 @@
 FROM alpine:3.2
 
+MAINTAINER Jacob Blain Christen <mailto:dweomer5@gmail.com, https://github.com/dweomer, https://twitter.com/dweomer>
+
 COPY *.template /srv/openldap/
 COPY openldap.sh /srv/
 
