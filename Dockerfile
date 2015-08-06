@@ -10,9 +10,12 @@ RUN set -x \
  && chmod -v +x /srv/openldap.sh \
  && apk add --update \
         gettext \
+        libintl \
         openldap \
         openldap-back-hdb \
         openldap-clients \
+ && cp -v /usr/bin/envsubst /usr/local/bin/ \
+ && apk del --purge gettext \
  && mv -vf /etc/openldap/ldap.conf /etc/openldap/ldap.conf.original \
  && mv -vf /etc/openldap/slapd.conf /etc/openldap/slapd.conf.original \
  && echo "mech_list: plain external" > /etc/openldap/sasl2/slapd.conf \
