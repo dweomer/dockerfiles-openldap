@@ -137,6 +137,7 @@ olcAccess: to attrs=userPassword,shadowLastChange
   by self write
   by anonymous auth
   by dn="cn=admin,${LDAP_SUFFIX}" write
+  by group/organizationalRole/roleOccupant="cn=admin,${LDAP_SUFFIX}" write
   by * none
 olcAccess: to dn.base="" by * read
 olcAccess: to *
