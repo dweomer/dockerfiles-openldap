@@ -37,6 +37,8 @@ if [[ ! -d ${OPENLDAP_CONFIG_DIR}/cn=config ]]; then
         cat /srv/openldap/ldap.conf.template | envsubst > ${OPENLDAP_ETC_DIR}/ldap.conf
     fi
 
+    mkdir -p ${OPENLDAP_BACKEND_DIR}/run
+    chown -R ldap:ldap ${OPENLDAP_BACKEND_DIR}
     chown -R ldap:ldap ${OPENLDAP_CONFIG_DIR} ${OPENLDAP_BACKEND_DIR}
 
     if [[ -d /srv/openldap.d ]]; then
@@ -51,7 +53,7 @@ if [[ ! -d ${OPENLDAP_CONFIG_DIR}/cn=config ]]; then
         for f in $(find /srv/openldap.d -type f | sort); do
             case "$f" in
                 *.sh)   echo "$0: sourcing $f"; . "$f" ;;
-                *.ldif) echo "$0: applying $f"; ldapadd -f "$f" 2>&1;;
+                *.ldif) echo "$0: applying $f"; ldapadd -Y EXTERNAL -f "$f" 2>&1;;
                 *)      echo "$0: ignoring $f" ;;
             esac
         done
