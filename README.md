@@ -1,4 +1,6 @@
-# OpenLDAP's SLAPD running on a slimmer-than-debian Alpine Linux 3.2 base.
+# OpenLDAP [![](https://badge.imagelayers.io/dweomer/openldap:latest.svg)](https://imagelayers.io/?images=dweomer/openldap:latest 'Get your own badge on imagelayers.io') 
+
+## SLAPD running on a slimmer-than-debian Alpine Linux 3.2 base.
 The [_`memberOf`_](http://www.openldap.org/software/man.cgi?query=slapo-memberof&sektion=5) (with [_refint_](http://www.openldap.org/software/man.cgi?query=slapo-refint&sektion=5)) overlay is installed and configured for [`groupOfUniqueNames`](https://tools.ietf.org/html/rfc4519#section-3.6).
 
 ## Usage
