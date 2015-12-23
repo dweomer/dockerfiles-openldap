@@ -1,4 +1,9 @@
-# OpenLDAP SLAPD on Alpine Linux [![](https://badge.imagelayers.io/dweomer/openldap:latest.svg)](https://imagelayers.io/?images=dweomer/openldap:latest 'Get your own badge on imagelayers.io') 
+# OpenLDAP SLAPD on Alpine Linux
+
+[![Docker Stars](https://img.shields.io/docker/stars/dweomer/openldap.svg)][hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/dweomer/openldap.svg)][hub]
+[![Image Size](https://img.shields.io/imagelayers/image-size/dweomer/openldap/latest.svg)][layers]
+[![Image Layers](https://img.shields.io/imagelayers/layers/dweomer/openldap/latest.svg)][layers]
 
 The [_`memberOf`_](http://www.openldap.org/software/man.cgi?query=slapo-memberof&sektion=5) (with [_refint_](http://www.openldap.org/software/man.cgi?query=slapo-refint&sektion=5)) overlay is installed and configured for [`groupOfUniqueNames`](https://tools.ietf.org/html/rfc4519#section-3.6).
 
@@ -33,3 +38,11 @@ If not specified this is the string 'lderp!' concatenated with the first [`domai
 The first time the container starts up it will look for any files under the `/srv/openldap.d/` hierarchy and process them in lexical order. Right now the only supported file extensions are `.sh` and `.ldif`, everything else is ignored.
 
 If not already present, `/srv/openldap.d/000-domain.ldif` is created prior to such processing so that it will be picked up. This will create an [`organizationalUnit`](https://tools.ietf.org/html/rfc4519#section-3.11) for user accounts with [RDN](https://tools.ietf.org/html/rfc4512#section-2.3.1) `cn=users` and for user groups with [RDN](https://tools.ietf.org/html/rfc4512#section-2.3.1) `cn=groups`.
+
+## License
+
+See the `LICENSE` file in this repository.
+
+[hub]: https://hub.docker.com/r/dweomer/openldap/
+[issues]: https://github.com/dweomer/dockerfiles-openldap/issues
+[layers]: https://imagelayers.io/?images=dweomer/openldap:latest
